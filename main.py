@@ -23,7 +23,13 @@ class imageSave:
         
     def imageAddText(self, img):
         w, h = img.size
-        font = ImageFont.truetype('arial.ttf', self.fontSize)
+        try:
+            # 優先嘗試載入指定的 ttf 字型
+            font = ImageFont.truetype('arial.ttf', self.fontSize)
+        except IOError:
+            # 如果找不到字型檔案，則載入 Pillow 內建的預設字型
+            print("警告: 'arial.ttf' 字型檔案未找到。將使用預設字型。")
+            font = ImageFont.load_default()
         draw = ImageDraw.Draw(img)
 
         current_time = datetime.datetime.now()
