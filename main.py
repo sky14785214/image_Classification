@@ -6,12 +6,14 @@ import csv
 import pyautogui
 
 class imageSave:
-    def __init__(self, imageList : list, path : str = './my_captures', log : str = 'image_log.csv'):
-        self.fontSize = 12
+    def __init__(self, imageList : list,  **kwargs):
+        self.fontSize = kwargs.get('fontSize', 12)
+        self.name = kwargs.get('dirName', 'CAM')
+        self.path = kwargs.get('path', './my_captures')
+        self.log = kwargs.get('log', 'image_log.csv')
+        self.enableSaveImg = kwargs.get('enableSaveImg', True)
         self.imgTextList = []
-        self.name = "CAM"
-        self.path = path
-        self.log = log
+
         # self.checkDir('./my_captures')
         for i in range(len(imageList)):
             imgText = self.imageAddText(imageList[i])
@@ -47,7 +49,8 @@ class imageSave:
     
     def image2Dir(self):
         path = self.path + '/' + self.name
-
+        if self.enableSaveImg != True:
+            return
         for i in range(len(self.imgTextList)):
             camPath = path + str(i)
             if not os.path.exists(camPath):
@@ -98,4 +101,4 @@ if __name__ == "__main__":
     testList = []
     myScreenshot = pyautogui.screenshot()
     testList = cutimg(myScreenshot)
-    imageSave(testList, './my_captures')
+    imageSave(testList,path = './my_captures')
